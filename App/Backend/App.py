@@ -1,15 +1,10 @@
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, url_for, g
 import json
 import os
 from Backend.Helpers.users import *
+from Backend.Helpers.settings import *
+from Backend.Helpers.statistics import *
 from Backend.utils.constants import *
-
-def init_db():
-    os.makedirs(os.path.dirname(USER_DB_PATH), exist_ok=True)
-
-    if not os.path.exists(USER_DB_PATH) or os.path.getsize(USER_DB_PATH) == 0:
-        with open(USER_DB_PATH, "w") as f:
-            json.dump([], f)
 
 app = Flask(
     __name__,
@@ -30,11 +25,36 @@ def require_login():
     if "user" not in session:
         return redirect(url_for("login"))
     
+@app.before_request
+def load_user():
+    username = session.get("user")
+
+    if username:
+        g.user = get_user_by_username(username)
+        g.settings = get_user_settings(username)
+        g.statistics = get_user_statistics(username)
+    else:
+        g.user = None
+        g.settings = None
+        g.statistics = None
 @app.context_processor
 def inject_user():
     return {
-        "user": session.get("user")
+        "user": g.user,
+        "settings": g.settings,
+        "statistics":g.statistics
     }
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -44,6 +64,9 @@ def login():
     # POST request
     username = request.form.get("username")
     password = request.form.get("password")
+
+    if not username or not password:
+        return render_template("register.html",error="Username or Password cannot be empty fields")
 
     if valid_user(username, password):
         session["user"] = username
@@ -66,7 +89,7 @@ def register():
         return render_template("register.html",error="Username or Password cannot be empty fields")
 
     if user_exists(username):
-        return render_template("register.html",error="Account already exists")
+        return render_template("register.html",error="Account name already in use")
 
     register_user(username,password)
     session["user"] = username
@@ -88,11 +111,50 @@ def scores():
 def settings():
     return render_template("settings.html")
 
+@app.post("/api/settings/darkmode")
+def toggle_darkmode():
+    username = session["user"]
+
+    settings = load_settings()
+
+    settings[username]["dark_mode"] = not settings[username].get("dark_mode", False)
+
+    save_settings(settings)
+
+    return {
+        "dark_mode": settings[username]["dark_mode"]
+    }
+
+@app.get("/api/leaderboard")
+def leaderboard():
+
+    statistics = load_statistics()
+
+    rankings = []
+
+    for username, stats in statistics.items():
+        rankings.append({
+            "username": username,
+            "level": stats["Level"],
+            "experience": stats["experience"]
+        })
+
+    rankings.sort(
+        key=lambda player: (
+            player["level"],
+            player["experience"]
+        ),
+        reverse=True
+    )
+    print({"leaderboard": rankings[:10]})
+    return {
+        "leaderboard": rankings[:10]
+    }
+
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True,port=8000)

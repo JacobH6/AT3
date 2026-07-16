@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+
+<body class="{% if settings.dark_mode %}dark-mode{% endif %}">
+
+<header class="top-bar">
+
+    <nav class="navbar">
+        <a href="/main">Home</a>
+        <a href="/graphs">Graphs</a>
+        <a href="/scores">Scores</a>
+        <a href="/settings">Settings</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <div class="profile-area">
+
+        <a href="/settings" class="username-box">
+            {{ user.username }}
+        </a>
+
+        <div class="player-title">
+            <div class="title">
+                {{ statistics.Title }}
+            </div>
+
+            <div>
+                Level {{ statistics.Level }}
+            </div>
+
+            <div>
+                {{ statistics.experience }}/100 XP
+            </div>
+        </div>
+
+    </div>
+</header>
+
+{% block content %}
+{% endblock %}
+</body>
+</html>

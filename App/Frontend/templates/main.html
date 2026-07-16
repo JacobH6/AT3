@@ -1,21 +1,12 @@
-<!DOCTYPE html>
-<html>
-<body>
-    {% if user %}
-    <h1>{{ user }}</h1>
-    {% endif %}
-    <nav>
-        <a href="/main">Home</a>
-        <a href="/graphs">Graphs</a>
-        <a href="/scores">Scores</a>
-        <a href="/settings">Settings</a>
-        <a href="/logout">Logout</a>
-    </nav>
-    <h1>Main Page</h1>
 
-    <a href="/graphs">Graphs</a><br>
-    <a href="/scores">Scores</a><br>
-    <a href="/settings">Settings</a><br>
-</body>
-</html>
+{% extends "base.html" %}
 
+{% block content %}
+
+<h1>Main Page</h1>
+
+<a href="/graphs">Graphs</a><br>
+<a href="/scores">Scores</a><br>
+<a href="/settings">Settings</a><br>
+
+{% endblock %}

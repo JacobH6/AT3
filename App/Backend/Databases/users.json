@@ -1,10 +1,7 @@
 [
     {
-        "username": "jacob",
-        "password": "hendry"
-    },
-    {
-        "username": "ethen",
-        "password": "fuckyou"
+        "username": "evelyn",
+        "password": "scrypt:32768:8:1$K2U2bvGZRYmhLWvk$053ecd31ba1dc144b614ceab322555d5e8abeb7bb9489102a231fdde8f30174ace92c2045f95c3bdbee55d390e9c9e9e438083ec8816d68abacf5bcfdb4b8d59",
+        "user_ID": 88623625032
     }
 ]
