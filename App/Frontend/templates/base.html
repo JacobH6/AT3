@@ -6,7 +6,7 @@
     <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </head>
 
-<body class="{% if settings.dark_mode %}dark-mode{% endif %}">
+<body class="{% if settings.Dark_mode %}dark-mode{% endif %}">
 
 <header class="top-bar">
 
@@ -25,15 +25,15 @@
         </a>
 
         <div class="player-title">
-            <div class="title">
+            <div class='title' id="title">
                 {{ statistics.Title }}
             </div>
 
-            <div>
+            <div id="level">
                 Level {{ statistics.Level }}
             </div>
 
-            <div>
+            <div id="xp">
                 {{ statistics.experience }}/100 XP
             </div>
         </div>

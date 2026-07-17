@@ -1,8 +1,20 @@
 from Backend.utils.constants import *
 import json
+from Backend.Helpers.statistics import *
+from Backend.Helpers.settings import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from random import *
+import re
     
+def validate_registration(username):
+    if len(username) < 3 or len(username) > 13:
+        return False
+
+    return re.match(
+        r"^[a-zA-Z0-9_]+$",
+        username
+    )
+
 def user_exists(username):
     users = load_users()
 
@@ -75,27 +87,5 @@ def register_user(username,password):
     with open(USER_DB_PATH, "w") as f:
         json.dump(users, f, indent=4)
 
-
-
-    with open(STATISTICS_DB_PATH, 'r') as f:
-        statistics= json.load(f)
-
-        statistics[username]={
-            "Level": 0,
-            "Title": "Rookie",
-            "experience":0,
-            "excercise_history":{}
-        }
-    with open(STATISTICS_DB_PATH, "w") as f:
-        json.dump(statistics, f, indent=4)
-    
-
-    with open(SETTING_DB_PATH, "r") as f:
-        settings = json.load(f)
-
-        settings[username]={
-            "Dark_mode": False,
-        }
-
-    with open(SETTING_DB_PATH, "w") as f:
-        json.dump(settings, f, indent=4)
+    generate_user_statistics(username)
+    generate_user_settings(username)

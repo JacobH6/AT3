@@ -1,12 +1,98 @@
-
 {% extends "base.html" %}
 
 {% block content %}
 
-<h1>Main Page</h1>
+<div class="dashboard">
 
-<a href="/graphs">Graphs</a><br>
-<a href="/scores">Scores</a><br>
-<a href="/settings">Settings</a><br>
+    <div class="top-cards">
+
+        <div class="dashboard-card">
+            <h2>Exercise Today</h2>
+
+            <p>Current Level: {{ statistics.Level }}</p>
+            <p>Experience gained today: {{ statistics.days_experience }}</p>
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h2>Log Workout</h2>
+
+            <form id="workout-form">
+
+                <input
+                    type="text"
+                    id="exercise"
+                    placeholder="Exercise"
+                    required
+                >
+
+                <input
+                    type="number"
+                    id="weight"
+                    placeholder="Weight/Distance (kg/km)"
+                    required
+                >
+
+                <input
+                    type="number"
+                    id="reps"
+                    placeholder="Reps"
+                    required
+                >
+
+                <button type="submit">
+                    Add Workout
+                </button>
+
+            </form>
+
+            <div id="workout-message"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card exercise-history">
+
+        <h2>Previous Exercises</h2>
+
+        <div id="workout-list">
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+<div id="edit-popup" class="popup hidden">
+
+    <div class="popup-content">
+
+        <h2>Edit Workout</h2>
+
+
+        <input id="edit-id" type="hidden">
+
+
+        <input id="edit-exercise">
+
+        <input id="edit-weight" type="number">
+
+        <input id="edit-reps" type="number">
+
+
+        <button id="save-edit">
+            Save
+        </button>
+
+        <button id="cancel-edit">
+            Cancel
+        </button>
+
+    </div>
+
+</div>
 
 {% endblock %}
