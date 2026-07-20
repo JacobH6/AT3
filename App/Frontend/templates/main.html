@@ -6,11 +6,29 @@
 
     <div class="top-cards">
 
-        <div class="dashboard-card">
-            <h2>Exercise Today</h2>
+        <div class="dashboard-card ai-card">
 
-            <p>Current Level: {{ statistics.Level }}</p>
-            <p>Experience gained today: {{ statistics.days_experience }}</p>
+            <h2>AI Workout Assistant</h2>
+
+            <div id="ai-response">
+                Ask me about your training!
+            </div>
+
+
+            <div class="ai-input">
+
+                <input 
+                    id="ai-question"
+                    type="text"
+                    placeholder="Ask about your workouts..."
+                >
+
+                <button id="ai-send">
+                    Send
+                </button>
+
+            </div>
+
         </div>
 
 

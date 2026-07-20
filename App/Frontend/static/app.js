@@ -1,5 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    if(
+        document.getElementById(
+            "prediction-text"
+        )
+    ){
+        loadPrediction();
+    }
+
+
     const cancelEdit = document.getElementById("cancel-edit");
 
     if (cancelEdit) {
@@ -400,5 +409,85 @@ if ("serviceWorker" in navigator) {
             });
 
     });
+
+}
+
+const aiButton = document.getElementById("ai-send");
+
+
+if(aiButton){
+
+    aiButton.addEventListener(
+        "click",
+        async () => {
+
+
+        const question =
+            document.getElementById("ai-question").value;
+
+
+        const response = await fetch(
+            "/api/coach",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body: JSON.stringify({
+                    question: question
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        document.getElementById("ai-response")
+            .textContent = data.response;
+
+
+    });
+
+}
+
+async function loadPrediction(){
+
+    const response = await fetch(
+        "/api/progress-prediction"
+    );
+
+
+    const data = await response.json();
+
+
+    const box =
+        document.getElementById(
+            "prediction-text"
+        );
+
+
+    if(data.error){
+
+        box.textContent =
+            data.error;
+
+        return;
+    }
+
+
+    box.textContent =
+        `You are earning approximately `
+        +
+        `${data.average_xp} XP per day. `
+        +
+        `At this rate you will level up in `
+        +
+        `${data.days_to_level} days. \n` 
+        +
+        `${data.advice}`;
+
 
 }

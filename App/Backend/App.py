@@ -9,6 +9,7 @@ import secrets
 from markupsafe import escape
 from datetime import datetime
 from flask import send_from_directory
+from Backend.Helpers.ai import ask_ai
 app = Flask(
     __name__,
     template_folder="../Frontend/templates",
@@ -311,6 +312,121 @@ def service_worker():
         "sw.js",
         mimetype="application/javascript"
     )
+
+@app.post("/api/coach")
+def ai():
+
+    statistics = get_user_statistics(
+        session["user"]
+    )
+
+    print(statistics)
+
+    question = request.json["question"]
+
+
+    prompt = f"""
+You are a workout assistant.
+
+Rules:
+- Give concise advice.
+- Use the user's workout history.
+- Do not invent completed workouts.
+- Encourage safe progression.
+- Explain reasoning.
+
+User statistics:
+
+{statistics}
+
+
+User question:
+
+{question}
+
+Answer:
+"""
+
+
+    response = ask_ai(prompt)
+
+
+    return {
+        "response": response
+    }
+
+@app.get("/api/progress-prediction")
+def progress_prediction():
+
+    statistics = get_user_statistics(
+        session["user"]
+    )
+
+    daily_xp = {}
+
+    for workout in statistics["Workouts"]:
+
+        date = datetime.fromisoformat(
+            workout["timestamp"]
+        ).date().isoformat()
+
+        xp = workout.get(
+            "xp_gained",
+            0
+        )
+
+        daily_xp[date] = (
+            daily_xp.get(date, 0)
+            + xp
+        )
+
+
+    if len(daily_xp) == 0:
+        return {
+            "error": "Not enough workout data"
+        }
+
+
+    average_xp = (
+        sum(daily_xp.values())
+        /
+        len(daily_xp)
+    )
+
+
+    current_xp = statistics["experience"]
+
+    xp_needed = 100 - current_xp
+
+
+    days_to_level = (
+        xp_needed / average_xp
+    )
+
+    if average_xp > 500:
+        advice = "Your progress is accelerating. Keep up the good work!"
+
+    elif average_xp > 200:
+        advice = "Your progress is steady. Not bad!"
+
+    else:
+        advice = "Try increasing workout consistency."
+
+
+    return {
+
+        "average_xp": round(
+            average_xp,
+            2
+        ),
+
+        "days_to_level": round(
+            days_to_level,
+            1
+        ),
+        "advice": advice
+
+    }
 
 @app.route("/logout")
 def logout():

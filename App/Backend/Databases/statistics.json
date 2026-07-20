@@ -1,0 +1,142 @@
+{
+    "greg": {
+        "Level": 0,
+        "Title": "Rookie",
+        "experience": 0,
+        "Workouts": [],
+        "days_experience": 0
+    },
+    "bob": {
+        "Level": 0,
+        "Title": "Rookie",
+        "experience": 22,
+        "Workouts": [
+            {
+                "exercise": "Asgfe",
+                "weight": 22.0,
+                "reps": 12,
+                "id": "67951c80-6dec-4d67-a5bc-480f16db17ee",
+                "timestamp": "2026-07-20T20:45:36.657778",
+                "xp_gained": 22
+            }
+        ],
+        "days_experience": 0
+    },
+    "jimmy": {
+        "Level": 1,
+        "Title": "Trainee",
+        "experience": 48,
+        "Workouts": [
+            {
+                "exercise": "Fgfdg",
+                "weight": 148.0,
+                "reps": 12,
+                "id": "16661081-0131-433f-b226-9ea814c91a1c",
+                "timestamp": "2026-07-20T20:46:06.912647",
+                "xp_gained": 148
+            }
+        ],
+        "days_experience": 0
+    },
+    "sarah": {
+        "Level": 2,
+        "Title": "Gym-Smart",
+        "experience": 57,
+        "Workouts": [
+            {
+                "exercise": "Gergerhehg",
+                "weight": 257.0,
+                "reps": 12,
+                "id": "59be3fd1-3231-4414-9420-c7036094dd8c",
+                "timestamp": "2026-07-20T20:46:52.323037",
+                "xp_gained": 257
+            }
+        ],
+        "days_experience": 0
+    },
+    "leslie": {
+        "Level": 0,
+        "Title": "Rookie",
+        "experience": 0,
+        "Workouts": [],
+        "days_experience": 0
+    },
+    "TestAccount": {
+        "Level": 4,
+        "Title": "Professional",
+        "experience": 70,
+        "Workouts": [
+            {
+                "exercise": "Bench Press",
+                "weight": 80.0,
+                "reps": 20,
+                "id": "113b982d-0700-4385-b308-28226fa2f130",
+                "timestamp": "2026-07-19T21:03:09.115835",
+                "xp_gained": 133
+            },
+            {
+                "exercise": "Bench Press",
+                "weight": 80.0,
+                "reps": 20,
+                "id": "c61d2bb9-e6d6-4010-90ff-55bb869a6348",
+                "timestamp": "2026-07-20T21:03:09.891042",
+                "xp_gained": 153
+            },
+            {
+                "exercise": "Bench Press",
+                "weight": 80.0,
+                "reps": 20,
+                "id": "dccb87f7-440c-49d4-affe-180148f0b735",
+                "timestamp": "2026-07-19T21:03:10.841617",
+                "xp_gained": 183
+            },
+            {
+                "exercise": "Running",
+                "weight": 15.0,
+                "reps": 4,
+                "id": "671d7ff6-5b44-4557-8eed-99bca72943bd",
+                "timestamp": "2026-07-15T21:03:22.825259",
+                "xp_gained": 24
+            },
+            {
+                "exercise": "Running",
+                "weight": 15.0,
+                "reps": 4,
+                "id": "671d7ff6-5b44-4557-8eed-99bca72943bd",
+                "timestamp": "2026-07-20T21:03:22.825259",
+                "xp_gained": 36
+            },
+            {
+                "exercise": "Crunches Weighted",
+                "weight": 20.0,
+                "reps": 20,
+                "id": "bcbce939-09ff-47b5-93db-a38b651c9ed7",
+                "timestamp": "2026-07-19T21:03:39.957802",
+                "xp_gained": 48
+            },
+            {
+                "exercise": "Crunches Weighted",
+                "weight": 20.0,
+                "reps": 20,
+                "id": "10b61e33-3730-47aa-b853-bd07df00875d",
+                "timestamp": "2026-07-20T17:03:42.079146",
+                "xp_gained": 22
+            }
+        ],
+        "days_experience": 0
+    },
+    "Ethen": {
+        "Level": 0,
+        "Title": "Rookie",
+        "experience": 0,
+        "Workouts": [],
+        "days_experience": 0
+    },
+    "Sarahphene": {
+        "Level": 1,
+        "Title": "Trainee",
+        "experience": 0,
+        "Workouts": [],
+        "days_experience": 0
+    }
+}

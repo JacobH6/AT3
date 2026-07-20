@@ -527,3 +527,51 @@ body.dark-mode .auth-card a {
     color: #66aaff;
 
 }
+
+.ai-card {
+
+    margin-top: 20px;
+
+}
+
+
+#ai-response {
+
+    min-height: 80px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: #f5f5f5;
+
+    margin-bottom: 15px;
+
+}
+
+
+.ai-input {
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+
+.ai-input input {
+
+    flex: 1;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+}
+
+
+body.dark-mode #ai-response {
+
+    background: #2a2a2a;
+
+}
