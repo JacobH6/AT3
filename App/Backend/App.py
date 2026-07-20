@@ -1,23 +1,21 @@
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, url_for, g
 import json
 import os
 from Backend.Helpers.users import *
+from Backend.Helpers.settings import *
+from Backend.Helpers.statistics import *
 from Backend.utils.constants import *
-
-def init_db():
-    os.makedirs(os.path.dirname(USER_DB_PATH), exist_ok=True)
-
-    if not os.path.exists(USER_DB_PATH) or os.path.getsize(USER_DB_PATH) == 0:
-        with open(USER_DB_PATH, "w") as f:
-            json.dump([], f)
-
+import secrets
+from markupsafe import escape
+from datetime import datetime
+from flask import send_from_directory
 app = Flask(
     __name__,
     template_folder="../Frontend/templates",
     static_folder="../Frontend/static"
 
 )
-app.secret_key = "You_Should_kill_yourself_NOW"
+app.secret_key = "9906b46b294f624da5f0ebdf88476f9bcc54511749683331845bdd6d6edd0ef9"
 @app.before_request
 def require_login():
     allowed_paths = ["/", "/register"]
@@ -27,14 +25,56 @@ def require_login():
             return redirect(url_for("main"))
         return  # allow login page
 
+    if request.path.startswith("/static/"):
+            return
+
     if "user" not in session:
         return redirect(url_for("login"))
     
+@app.before_request
+def load_user():
+    username = session.get("user")
+
+    if username:
+        g.user = get_user_by_username(username)
+        g.settings = get_user_settings(username)
+        g.statistics = get_user_statistics(username)
+
+
+        today = datetime.now().date()
+
+        g.statistics["days_experience"] = sum(
+            workout.get("xp_gained", 0)
+            for workout in g.statistics.get("Workouts", [])
+            if datetime.fromisoformat(
+                workout["timestamp"]
+            ).date() == today
+        )
+
+    else:
+        g.user = None
+        g.settings = None
+        g.statistics = None
+
+
 @app.context_processor
 def inject_user():
     return {
-        "user": session.get("user")
+        "user": g.user,
+        "settings": g.settings,
+        "statistics":g.statistics
     }
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -45,9 +85,12 @@ def login():
     username = request.form.get("username")
     password = request.form.get("password")
 
+    if not username or not password:
+        return render_template("login.html",error="Username or Password cannot be empty fields")
+
     if valid_user(username, password):
         session["user"] = username
-        return redirect("/main")
+        return redirect(url_for("main"))
 
     return render_template(
         "login.html",
@@ -66,7 +109,10 @@ def register():
         return render_template("register.html",error="Username or Password cannot be empty fields")
 
     if user_exists(username):
-        return render_template("register.html",error="Account already exists")
+        return render_template("register.html",error="Account name already in use")
+    
+    if not validate_registration(username):
+        return render_template("register.html",error="Username Must be between 3 and 13 charecters and must only contain alphanumeric charecters and underscores")
 
     register_user(username,password)
     session["user"] = username
@@ -88,11 +134,187 @@ def scores():
 def settings():
     return render_template("settings.html")
 
+@app.post("/api/settings/darkmode")
+def toggle_darkmode():
+    username = session["user"]
+    if not username:
+            return {"error": "Not logged in"}, 401
+
+    settings = load_settings()
+
+    if username not in settings:
+        return {"error": "User settings not found"}, 404
+
+    settings[username]["Dark_mode"] = not settings[username].get(
+        "Dark_mode",
+        False
+    )
+
+    save_settings(settings)
+
+    return {
+        "dark_mode": settings[username]["Dark_mode"]
+    }
+
+@app.get("/api/leaderboard")
+def leaderboard():
+
+    statistics = load_statistics()
+
+    rankings = []
+
+    for username, stats in statistics.items():
+        rankings.append({
+            "username": username,
+            "level": stats["Level"],
+            "experience": stats["experience"]
+        })
+
+    rankings.sort(
+        key=lambda player: (
+            player["level"],
+            player["experience"]
+        ),
+        reverse=True
+    )
+    return {
+        "leaderboard": rankings[:10]
+    }
+
+@app.post("/api/workouts")
+def add_workout():
+    data = request.get_json()
+
+    if not data:
+        return {"error": "Invalid request"}, 400
+
+
+    exercise = data["exercise"]
+    try:
+        weight = float(data["weight"])
+        reps = int(data["reps"])
+    except (ValueError, TypeError):
+        return {"error": "Invalid values"}, 400
+
+    if weight < 0 or reps < 0:
+        return {"error": "Values cannot be negative"}, 400
+
+
+
+    record_workout(g.user["username"],data)
+    statistics = get_user_statistics(g.user['username'])
+
+    return {
+        "success": True,
+        "level": statistics["Level"],
+        "experience": statistics["experience"],
+        "title": statistics["Title"]
+    }
+
+
+@app.get("/api/xp-history")
+def xp_history():
+
+    statistics = get_user_statistics(session["user"])
+
+    daily_xp = {}
+
+    for workout in statistics["Workouts"]:
+
+        date = datetime.fromisoformat(
+            workout["timestamp"]
+        ).date().isoformat()
+
+        exercise = workout["exercise"]
+        xp = workout.get("xp_gained", 0)
+
+
+        if date not in daily_xp:
+            daily_xp[date] = {}
+
+
+        if exercise not in daily_xp[date]:
+            daily_xp[date][exercise] = 0
+
+
+        daily_xp[date][exercise] += xp
+
+
+    return {
+        "history": daily_xp
+    }
+
+@app.get("/api/workouts")
+def get_workouts():
+
+    stats = get_user_statistics(session["user"])
+
+    stats["Workouts"].sort(
+        key=lambda x: x["timestamp"],
+        reverse=True
+    )
+
+    return {
+        "workouts": stats["Workouts"]
+    }
+
+@app.put("/api/workouts/<workout_id>")
+def edit_workout(workout_id):
+
+    data = request.get_json()
+
+    statistics = load_statistics()
+
+    workouts = statistics[session["user"]]["Workouts"]
+
+
+    for workout in workouts:
+
+        if workout["id"] == workout_id:
+
+            workout["exercise"] = data["exercise"]
+            workout["weight"] = data["weight"]
+            workout["reps"] = data["reps"]
+
+            break
+
+
+    save_statistics(statistics)
+
+
+    return {
+        "success": True
+    }
+
+@app.delete("/api/workouts/<workout_id>")
+def delete_workout(workout_id):
+
+    statistics = load_statistics()
+
+    workouts = statistics[session["user"]]["Workouts"]
+
+    statistics[session["user"]]["Workouts"] = [
+        workout for workout in workouts
+        if workout["id"] != workout_id
+    ]
+
+    save_statistics(statistics)
+
+    return {
+        "success": True
+    }
+
+@app.route("/sw.js")
+def service_worker():
+    return send_from_directory(
+        app.static_folder,
+        "sw.js",
+        mimetype="application/javascript"
+    )
+
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect("/")
-
+    return redirect(url_for("login"))
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True,port=8000)

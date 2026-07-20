@@ -1,23 +1,58 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/app.js" defer></script>
+</head>
+
 <body>
 
-<h1>Login</h1>
+<div class="auth-container">
 
-<form action="/" method="POST">
-    <label>Username:</label>
-    <input type="text" name="username">
+    <div class="auth-card">
 
-    <br><br>
+        <h1>Login</h1>
 
-    <label>Password:</label>
-    <input type="password" name="password">
+        <form action="/" method="POST">
 
-    <br><br>
+            <label>Username</label>
+            <input 
+                type="text" 
+                name="username"
+                required
+            >
 
-    <button type="submit">Login</button>
-</form>
-<a href="/register">Register</a>
+
+            <label>Password</label>
+            <input 
+                type="password" 
+                name="password"
+                required
+            >
+
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+
+        <a href="/register">
+            Create an account
+        </a>
+
+        {% if error %}
+            <p class="error-message">
+                {{ error }}
+            </p>
+        {% endif %}
+
+    </div>
+
+</div>
 
 </body>
+
 </html>

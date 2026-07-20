@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+
+
 <body>
 
-<h1>Register</h1>
+<div class="auth-container">
 
-<form action="/register" method="POST">
-    <label>Username:</label>
-    <input type="text" name="username">
+    <div class="auth-card">
 
-    <br><br>
+        <h1>Register</h1>
 
-    <label>Password:</label>
-    <input type="password" name="password">
+        <form action="/register" method="POST">
 
-    <br><br>
+            <label>Username:</label>
+            <input 
+                type="text" 
+                name="username"
+                required
+            >
 
-    <button type="submit">Register</button>
-    <a href="/">Login</a>
-</form>
-    {% if error %}
-    <p style="color:red">{{ error }}</p>
-    {% endif %}
+
+            <label>Password:</label>
+            <input 
+                type="password" 
+                name="password"
+                required
+            >
+
+
+            <button type="submit">
+                Register
+            </button>
+
+
+            {% if error %}
+                <p class="error-message">
+                    {{ error }}
+                </p>
+            {% endif %}
+
+        </form>
+
+
+        <a href="/">
+            Login
+        </a>
+
+    </div>
+
+</div>
+
 </body>
 </html>
