@@ -1,0 +1,529 @@
+body {
+    background-color: white;
+    color: black;
+    font-family:
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+}
+
+a {
+    color: blue;
+}
+
+/* Dark theme overrides */
+body.dark-mode {
+    background-color: #121212;
+    color: #eeeeee;
+}
+
+body.dark-mode a {
+    color: #66aaff;
+}
+
+.leaderboard-card {
+    width: 80%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 25px;
+
+    background: white;
+    border-radius: 15px;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+.leaderboard-table th {
+    text-align: left;
+    padding: 15px;
+
+    background: #333;
+    color: white;
+}
+
+
+.leaderboard-table td {
+    padding: 12px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+
+.leaderboard-table tr:hover {
+    background: #f1f1f1;
+}
+
+body.dark-mode .leaderboard-card {
+    background: #1e1e1e;
+}
+
+
+body.dark-mode .leaderboard-table td {
+    border-color: #444;
+}
+
+
+body.dark-mode .leaderboard-table tr:hover {
+    background: #333;
+}
+
+
+.navbar {
+    display: flex;
+    gap: 10px;
+
+    padding: 15px 25px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+
+.navbar a {
+    text-decoration: none;
+
+    color: black;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    transition: 
+        background-color 0.2s,
+        transform 0.2s;
+}
+
+
+.navbar a:hover {
+    background-color: #e8e8e8;
+
+    transform: translateY(-2px);
+}
+
+body.dark-mode .navbar {
+    background: #1e1e1e;
+}
+
+
+body.dark-mode .navbar a {
+    color: white;
+}
+
+
+body.dark-mode .navbar a:hover {
+    background: #333;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px;
+}
+
+.player-title {
+    padding: 12px 20px;
+
+    background: white;
+    color: black;
+
+    border-radius: 12px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+
+    text-align: center;
+}
+
+.player-title .title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.player-title .level {
+    font-size: 0.9rem;
+}
+
+.player-title .xp {
+    font-size: 0.8rem;
+}
+
+body.dark-mode .player-title {
+    background: #1e1e1e;
+    color: white;
+}
+
+.profile-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.username-box {
+    padding: 12px 18px;
+
+    background: white;
+    color: black;
+
+    border-radius: 12px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+
+    font-weight: bold;
+}
+
+body.dark-mode .username-box {
+    background: #1e1e1e;
+    color: white;
+}
+
+body.dark-mode .dashboard-card {
+    background: #1e1e1e;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.success-message {
+    color: green;
+    font-weight: bold;
+}
+
+.graph-title {
+    text-align: center;
+}
+
+.dashboard {
+    width: 80%;
+    margin: 40px auto;
+}
+
+
+.top-cards {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+}
+
+
+.dashboard-card {
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    background: white;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+
+}
+
+
+.exercise-history {
+
+    margin-top: 20px;
+
+    min-height: 400px;
+
+}
+
+.exercise-history {
+    min-height: 400px;
+}
+
+
+#workout-list {
+
+    max-height: 300px;
+
+    overflow-y: auto;
+
+    padding-right: 10px;
+
+}
+
+.workout-entry {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+
+    padding: 15px;
+
+    margin-bottom: 10px;
+
+
+    background: #f5f5f5;
+
+    border-radius: 12px;
+
+}
+
+
+.workout-info h3 {
+
+    margin: 0 0 5px 0;
+
+}
+
+
+.workout-info p {
+
+    margin: 2px;
+
+}
+
+
+.workout-buttons {
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+body.dark-mode .workout-entry {
+
+    background: #2a2a2a;
+
+}
+
+.popup {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,0.5);
+
+}
+
+
+.popup-content {
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:15px;
+
+}
+
+
+.hidden {
+    display:none;
+}
+
+body.dark-mode .popup-content {
+
+    background: #1e1e1e;
+    color: white;
+
+}
+
+body.dark-mode .popup-content input {
+
+    background: #2a2a2a;
+    color: white;
+    border: 1px solid #555;
+
+}
+
+
+/* Login/Register pages */
+
+.auth-container {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+/* Login/Register */
+
+.auth-container {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+.auth-card {
+
+    width: 350px;
+
+    padding: 40px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    box-shadow: 
+        0 5px 20px rgba(0,0,0,0.15);
+
+    text-align: center;
+
+}
+
+
+.auth-card h1 {
+
+    margin-bottom: 30px;
+
+    font-size: 2rem;
+
+}
+
+
+.auth-card form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+.auth-card label {
+
+    text-align: left;
+
+    font-weight: bold;
+
+}
+
+
+.auth-card input {
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    border: 1px solid #ccc;
+
+    font-size: 1rem;
+
+}
+
+
+.auth-card input:focus {
+
+    outline: none;
+
+    border-color: #66aaff;
+
+}
+
+
+.auth-card button {
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    border: none;
+
+    background: #333;
+
+    color: white;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition: transform 0.2s;
+}
+
+
+.auth-card button:hover {
+
+    transform: translateY(-2px);
+
+}
+
+
+.auth-card a {
+
+    display: block;
+
+    margin-top: 20px;
+
+}
+
+body.dark-mode .auth-card {
+
+    background: #1e1e1e;
+
+    color: white;
+
+}
+
+
+body.dark-mode .auth-card input {
+
+    background: #2a2a2a;
+
+    color: white;
+
+    border-color: #555;
+
+}
+
+
+body.dark-mode .auth-card button {
+
+    background: #555;
+
+}
+
+
+body.dark-mode .auth-card a {
+
+    color: #66aaff;
+
+}
